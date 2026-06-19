@@ -16,3 +16,70 @@
     width: 110%;
   }
 }
+
+/* Calendar styles for Schedule page */
+.calendar {
+  border: 1px solid #eee;
+  background: #fff;
+  padding: 12px;
+}
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.calendar-grid {
+  width: 100%;
+}
+.calendar-row.calendar-weekdays {
+  display: flex;
+}
+.calendar-row.calendar-days {
+  display: flex;
+  flex-wrap: wrap;
+}
+.calendar-cell {
+  box-sizing: border-box;
+  width: 14.2857%; /* 100/7 */
+  border: 1px solid #f3f3f3;
+  min-height: 80px;
+  padding: 6px;
+}
+.calendar-weekday {
+  background: #fafafa;
+  text-align: center;
+  font-weight: 600;
+  padding: 8px 6px;
+}
+.calendar-day {
+  background: #fff;
+}
+.calendar-cell .date-number {
+  float: right;
+  font-size: 12px;
+  color: #666;
+}
+.calendar-cell .events {
+  margin-top: 8px;
+}
+.calendar-cell .event {
+  background: #f0f8ff;
+  border-radius: 3px;
+  padding: 3px 6px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.calendar-cell.today {
+  background: #fff9e6;
+  border-color: #ffe58f;
+}
+
+@media screen and (max-width: 600px) {
+  .calendar-cell { width: 14.2857%; min-height: 60px; padding:4px }
+  .calendar-cell .event { font-size: 11px }
+}
+

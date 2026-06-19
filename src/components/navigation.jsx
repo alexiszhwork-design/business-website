@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const Navigation = (props) => {
+  const [servicesOpen, setServicesOpen] = useState(false);
+
+  const handleClick = (e, page) => {
+    e.preventDefault();
+    setServicesOpen(false);
+    if (props.onNavigate) {
+      props.onNavigate(page);
+    }
+  };
+
+  const handleServicesMouseEnter = () => {
+    setServicesOpen(true);
+  };
+
+  const handleServicesMouseLeave = () => {
+    setServicesOpen(false);
+  };
+
   return (
     <nav id="menu" className="navbar navbar-default navbar-fixed-top">
       <div className="container">
@@ -28,37 +46,78 @@ export const Navigation = (props) => {
         >
           <ul className="nav navbar-nav navbar-right">
             <li>
-              <a href="#features" className="page-scroll">
-                Features
+              <a href="#features" className="page-scroll" onClick={(e) => handleClick(e, "features")}>
+                Home
               </a>
             </li>
             <li>
-              <a href="#about" className="page-scroll">
+              <a href="#about" className="page-scroll" onClick={(e) => handleClick(e, "about")}>
                 About
               </a>
             </li>
-            <li>
-              <a href="#services" className="page-scroll">
-                Services
+            <li
+              className={`dropdown ${servicesOpen ? "open" : ""}`}
+              onMouseEnter={handleServicesMouseEnter}
+              onMouseLeave={handleServicesMouseLeave}
+            >
+              <a
+                href="#services"
+                className="page-scroll dropdown-toggle"
+              >
+                Services <span className="caret"></span>
               </a>
+              {servicesOpen && (
+                <ul className="dropdown-menu" style={{ display: "block" }}>
+                  <li>
+                    <a href="#programs" onClick={(e) => handleClick(e, "programs")}>
+                      Program (Art & Music)
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#workshops" onClick={(e) => handleClick(e, "workshops")}>
+                      Workshops
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#schedule" onClick={(e) => handleClick(e, "schedule")}>
+                      Schedule
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#services" onClick={(e) => handleClick(e, "services")}>
+                      Parties and Camps
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#services" onClick={(e) => handleClick(e, "services")}>
+                      Private Lessons
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#services" onClick={(e) => handleClick(e, "services")}>
+                      Parties & Events
+                    </a>
+                  </li>
+                </ul>
+              )}
             </li>
             <li>
-              <a href="#portfolio" className="page-scroll">
+              <a href="#portfolio" className="page-scroll" onClick={(e) => handleClick(e, "gallery")}>
                 Gallery
               </a>
             </li>
             <li>
-              <a href="#testimonials" className="page-scroll">
+              <a href="#testimonials" className="page-scroll" onClick={(e) => handleClick(e, "testimonials")}>
                 Testimonials
               </a>
             </li>
             <li>
-              <a href="#team" className="page-scroll">
+              <a href="#team" className="page-scroll" onClick={(e) => handleClick(e, "team")}>
                 Team
               </a>
             </li>
             <li>
-              <a href="#contact" className="page-scroll">
+              <a href="#contact" className="page-scroll" onClick={(e) => handleClick(e, "contact")}>
                 Contact
               </a>
             </li>
