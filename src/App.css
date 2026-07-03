@@ -83,3 +83,42 @@
   .calendar-cell .event { font-size: 11px }
 }
 
+/* Programs cards */
+.programs-grid { margin-top: 18px; }
+.program-card { background: #fff; border: 1px solid #eee; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.04); max-width: 340px; margin: 0 auto; }
+.program-media { height: 190px; overflow: hidden; }
+.program-poster { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.program-body { padding: 14px 16px; display: flex; flex-direction: column; }
+.program-body h4 { margin: 0 0 10px 0; font-size: 18px; color: #222; }
+.program-body p { margin: 0 0 10px 0; color: #555; font-size: 14px; line-height: 1.5; }
+.program-actions { display: flex; gap: 12px; justify-content: center; padding: 8px 0 12px; }
+.btn-custom { background: #5cb85c; color: #fff; border: none; }
+.btn-custom:hover { background: #4aa64a; }
+
+
+#programs { padding-top: 24px; }
+/* Programs section title tweaks */
+#programs .section-title { padding-top: 96px; margin-bottom: 32px; }
+#programs .section-title h2 { font-size: 36px; margin-bottom: 6px; font-weight: 700; color: #222; }
+#programs .section-title p {
+  margin-top: 14px;
+  font-size: 18px;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: #444;
+  line-height: 1.6;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 300;
+  letter-spacing: 0.2px;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  #programs { padding-top: 12px; }
+  #programs .section-title { padding-top: 48px; }
+  #programs .section-title h2 { font-size: 28px; }
+  #programs .section-title p { font-size: 15px; max-width: 520px; }
+}
+
+

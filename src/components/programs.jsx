@@ -1,58 +1,61 @@
 import React from "react";
 
 export const Programs = (props) => {
+  // Use provided data if available, otherwise a small default list
+  const data =
+    props.data && props.data.length
+      ? props.data
+      : [
+          {
+            title: "Drawing & Painting",
+            desc: "Creative visual arts classes for beginners and intermediate students.",
+          },
+          {
+            title: "Early Music",
+            desc: "Singing, rhythm and movement for ages 3–6.",
+          },
+          {
+            title: "Instrument Lessons",
+            desc: "Private and group lessons: piano, guitar, violin, ukulele.",
+          },
+          {
+            title: "Songwriting & Ensemble",
+            desc: "Composition, collaboration, and small-group performance.",
+          },
+        ];
+
+  const posterFiles = [
+    "img/poster.png",
+    "img/poster1.avif",
+    "img/poster2.avif",
+    "img/poster3.avif",
+  ];
+
   return (
     <div id="programs">
       <div className="container">
         <div className="section-title text-center">
           <h2>Programs</h2>
-          <p>Explore our art and music programs for young learners.</p>
+          <p>Explore our art and music offerings — classes, workshops, and private lessons.</p>
         </div>
 
-        <div className="row">
-          <div className="col-xs-12 col-md-6">
-            <div className="program-text">
-              <h3>Art Programs</h3>
-              <p>
-                We offer a variety of art classes that encourage creativity
-                through drawing, painting, and mixed media. Students learn
-                fundamentals of color, composition, and storytelling while
-                exploring different materials and techniques.
-              </p>
-              <ul>
-                <li>Drawing & Sketching: observational drawing fundamentals</li>
-                <li>Painting: acrylics, watercolors, and tempera</li>
-                <li>Mixed-Media Workshops: collage, printmaking, and sculpture</li>
-                <li>Portfolio Prep: advanced classes for young artists</li>
-              </ul>
+        <div className="row programs-grid">
+          {data.map((p, i) => (
+            <div key={`${p.title}-${i}`} className="col-xs-12 col-sm-6 col-md-3">
+              <div className="program-card">
+                <div className="program-media">
+                  <img src={posterFiles[i % posterFiles.length]} alt={p.title} className="img-responsive program-poster" />
+                </div>
+                  <div className="program-body">
+                    <h4>{p.title}</h4>
+                    <p>{p.desc || p.text}</p>
+                    <div className="program-actions">
+                      <button onClick={() => props.onSelectProgram && props.onSelectProgram(p)} className="btn btn-sm btn-custom">Register Now</button>
+                    </div>
+                  </div>
+              </div>
             </div>
-          </div>
-
-          <div className="col-xs-12 col-md-6">
-            <div className="program-text">
-              <h3>Music Programs</h3>
-              <p>
-                Our music curriculum blends theory, ear training, and
-                performance. Children learn voice, rhythm, and instrumental
-                skills in a supportive ensemble environment.
-              </p>
-              <ul>
-                <li>Early Music: rhythm games and singing for ages 3–6</li>
-                <li>Instrument Lessons: piano, guitar, violin, and ukulele</li>
-                <li>Songwriting & Composition: melody, harmony, and structure</li>
-                <li>Ensemble & Performance: small group rehearsals and showcases</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-xs-12">
-            <div className="program-artwork text-center">
-              <img src="img/programs-art.jpg" className="img-responsive" alt="program art" />
-              <p className="caption">Where brushstrokes meet melodies.</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

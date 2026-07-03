@@ -2,10 +2,14 @@ import React, { useState } from "react";
 
 export const Navigation = (props) => {
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  const [galleryOpen, setGalleryOpen] = useState(false);
 
   const handleClick = (e, page) => {
     e.preventDefault();
     setServicesOpen(false);
+    setAboutOpen(false);
+    setGalleryOpen(false);
     if (props.onNavigate) {
       props.onNavigate(page);
     }
@@ -17,6 +21,22 @@ export const Navigation = (props) => {
 
   const handleServicesMouseLeave = () => {
     setServicesOpen(false);
+  };
+
+  const handleAboutMouseEnter = () => {
+    setAboutOpen(true);
+  };
+
+  const handleAboutMouseLeave = () => {
+    setAboutOpen(false);
+  };
+
+  const handleGalleryMouseEnter = () => {
+    setGalleryOpen(true);
+  };
+
+  const handleGalleryMouseLeave = () => {
+    setGalleryOpen(false);
   };
 
   return (
@@ -36,7 +56,7 @@ export const Navigation = (props) => {
             <span className="icon-bar"></span>{" "}
           </button>
           <a className="navbar-brand page-scroll" href="#page-top">
-            React Landing Page
+            Dreams Blossom Color & Chord
           </a>{" "}
         </div>
 
@@ -50,10 +70,28 @@ export const Navigation = (props) => {
                 Home
               </a>
             </li>
-            <li>
-              <a href="#about" className="page-scroll" onClick={(e) => handleClick(e, "about")}>
-                About
+            <li
+              className={`dropdown ${aboutOpen ? "open" : ""}`}
+              onMouseEnter={handleAboutMouseEnter}
+              onMouseLeave={handleAboutMouseLeave}
+            >
+              <a href="#about" className="page-scroll dropdown-toggle">
+                About <span className="caret"></span>
               </a>
+              {aboutOpen && (
+                <ul className="dropdown-menu" style={{ display: "block" }}>
+                  <li>
+                    <a href="#about" onClick={(e) => handleClick(e, "about")}>
+                      Our Story
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#team" onClick={(e) => handleClick(e, "team")}>
+                      Our Team
+                    </a>
+                  </li>
+                </ul>
+              )}
             </li>
             <li
               className={`dropdown ${servicesOpen ? "open" : ""}`}
@@ -93,29 +131,38 @@ export const Navigation = (props) => {
                       Private Lessons
                     </a>
                   </li>
+                </ul>
+              )}
+            </li>
+            <li
+              className={`dropdown ${galleryOpen ? "open" : ""}`}
+              onMouseEnter={handleGalleryMouseEnter}
+              onMouseLeave={handleGalleryMouseLeave}
+            >
+              <a href="#portfolio" className="page-scroll dropdown-toggle">
+                Gallery <span className="caret"></span>
+              </a>
+              {galleryOpen && (
+                <ul className="dropdown-menu" style={{ display: "block" }}>
                   <li>
-                    <a href="#services" onClick={(e) => handleClick(e, "services")}>
-                      Parties & Events
+                    <a href="#portfolio" onClick={(e) => handleClick(e, "gallery")}>
+                      Student Gallery
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#portfolio" onClick={(e) => handleClick(e, "gallery")}>
+                      Event Highlight
                     </a>
                   </li>
                 </ul>
               )}
             </li>
-            <li>
-              <a href="#portfolio" className="page-scroll" onClick={(e) => handleClick(e, "gallery")}>
-                Gallery
-              </a>
-            </li>
-            <li>
+            {/* <li>
               <a href="#testimonials" className="page-scroll" onClick={(e) => handleClick(e, "testimonials")}>
                 Testimonials
               </a>
-            </li>
-            <li>
-              <a href="#team" className="page-scroll" onClick={(e) => handleClick(e, "team")}>
-                Team
-              </a>
-            </li>
+            </li> */}
+            
             <li>
               <a href="#contact" className="page-scroll" onClick={(e) => handleClick(e, "contact")}>
                 Contact

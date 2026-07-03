@@ -1,5 +1,4 @@
 import { useState } from "react";
-import emailjs from "emailjs-com";
 import React from "react";
 
 const initialState = {
@@ -9,6 +8,8 @@ const initialState = {
 };
 export const Contact = (props) => {
   const [{ name, email, message }, setState] = useState(initialState);
+  const [loading, setLoading] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,24 +20,79 @@ export const Contact = (props) => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(name, email, message);
-    
-    {/* replace below with your own Service ID, Template ID and Public Key from your EmailJS account */ }
-    
-    emailjs
-      .sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", e.target, "YOUR_PUBLIC_KEY")
-      .then(
-        (result) => {
-          console.log(result.text);
+    setLoading(true);
+    setFeedbackMessage("");
+
+    // Replace YOUR_FORMSPREE_ID with your actual Formspree form ID
+    const formspreeEndpoint = "https://formspree.io/f/mrevwvqr";
+
+    fetch(formspreeEndpoint, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email, message }),
+    })
+      .then((response) => {
+        setLoading(false);
+        if (response.ok) {
+          setFeedbackMessage("✓ Message sent successfully!");
           clearState();
-        },
-        (error) => {
-          console.log(error.text);
+          setTimeout(() => setFeedbackMessage(""), 5000);
+        } else {
+          setFeedbackMessage("✗ Error sending message. Please try again.");
         }
-      );
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+        setFeedbackMessage("✗ Error sending message. Please try again.");
+      });
+  };
+  
+  const getSocialLink = (url, platform) => {
+    if (url && (url.startsWith("http") || url.startsWith("/"))) return url;
+    // Fall back to main site for each platform if no valid URL provided
+    const defaults = {
+      facebook: "https://facebook.com",
+      instagram: "https://instagram.com",
+      twitter: "https://twitter.com",
+      youtube: "https://youtube.com",
+    };
+    return defaults[platform] || "/";
   };
   return (
     <div>
+      <div className="container faq-wrapper" style={{ paddingTop: 100 }}>
+        <div className="col-md-10 col-md-offset-1">
+          <div className="section-title text-center">
+            <h2>FAQ</h2>
+            <p>Common questions about enrollment, schedules, and materials.</p>
+          </div>
+          <div className="faq-list">
+            <div className="faq-item">
+              <h4>What ages do you accept?</h4>
+              <p>We offer programs for children ages 3 through 16, with age-appropriate groupings and curriculum.</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>How do I enroll in a program?</h4>
+              <p>You can enroll by contacting us via the form below or by emailing us directly at {props.data ? props.data.email : "info@company.com"}.</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>Do I need to bring materials or instruments?</h4>
+              <p>Basic materials are provided for workshops. For instrument lessons, students should bring their own instrument when possible — we can advise on rentals.</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>What is your cancellation policy?</h4>
+              <p>We ask for 24 hours notice for cancellations. For multi-session programs, refunds are handled on a case-by-case basis.</p>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="contact">
         <div className="container">
           <div className="col-md-8">
@@ -60,6 +116,7 @@ export const Contact = (props) => {
                         placeholder="Name"
                         required
                         onChange={handleChange}
+                        value={name}
                       />
                       <p className="help-block text-danger"></p>
                     </div>
@@ -74,6 +131,7 @@ export const Contact = (props) => {
                         placeholder="Email"
                         required
                         onChange={handleChange}
+                        value={email}
                       />
                       <p className="help-block text-danger"></p>
                     </div>
@@ -88,12 +146,15 @@ export const Contact = (props) => {
                     placeholder="Message"
                     required
                     onChange={handleChange}
+                    value={message}
                   ></textarea>
                   <p className="help-block text-danger"></p>
                 </div>
-                <div id="success"></div>
-                <button type="submit" className="btn btn-custom btn-lg">
-                  Send Message
+                <div id="success" style={{ color: feedbackMessage.includes("✓") ? "green" : "red", marginBottom: "12px" }}>
+                  {feedbackMessage}
+                </div>
+                <button type="submit" className="btn btn-custom btn-lg" disabled={loading}>
+                  {loading ? "Sending..." : "Send Message"}
                 </button>
               </form>
             </div>
@@ -121,7 +182,13 @@ export const Contact = (props) => {
                 <span>
                   <i className="fa fa-envelope-o"></i> Email
                 </span>{" "}
-                {props.data ? props.data.email : "loading"}
+                {props.data ? (
+                  <a href={`mailto:${props.data.email}`} style={{ textDecoration: "none", color: "inherit" }}>
+                    {props.data.email}
+                  </a>
+                ) : (
+                  "loading"
+                )}
               </p>
             </div>
           </div>
@@ -130,17 +197,22 @@ export const Contact = (props) => {
               <div className="social">
                 <ul>
                   <li>
-                    <a href={props.data ? props.data.facebook : "/"}>
+                    <a href={getSocialLink(props.data && props.data.facebook, "facebook")} target="_blank" rel="noopener noreferrer">
                       <i className="fa fa-facebook"></i>
                     </a>
                   </li>
                   <li>
-                    <a href={props.data ? props.data.twitter : "/"}>
+                    <a href={getSocialLink(props.data && props.data.instagram, "instagram")} target="_blank" rel="noopener noreferrer">
+                      <i className="fa fa-instagram"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href={getSocialLink(props.data && props.data.twitter, "twitter")} target="_blank" rel="noopener noreferrer">
                       <i className="fa fa-twitter"></i>
                     </a>
                   </li>
                   <li>
-                    <a href={props.data ? props.data.youtube : "/"}>
+                    <a href={getSocialLink(props.data && props.data.youtube, "youtube")} target="_blank" rel="noopener noreferrer">
                       <i className="fa fa-youtube"></i>
                     </a>
                   </li>
@@ -149,7 +221,7 @@ export const Contact = (props) => {
             </div>
           </div>
         </div>
-      </div>
+        </div>
       <div id="footer">
         <div className="container text-center">
           <p>

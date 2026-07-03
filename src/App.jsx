@@ -5,6 +5,7 @@ import { Features } from "./components/features";
 import { About } from "./components/about";
 import { Services } from "./components/services";
 import { Programs } from "./components/programs";
+import { ProgramDetail } from "./components/programDetail";
 import { Workshops } from "./components/workshops";
 import { Schedule } from "./components/schedule";
 import { Gallery } from "./components/gallery";
@@ -27,6 +28,7 @@ const App = () => {
   }, []);
 
   const [currentPage, setCurrentPage] = useState("features");
+  const [selectedProgram, setSelectedProgram] = useState(null);
 
   const renderPage = () => {
     switch (currentPage) {
@@ -37,7 +39,17 @@ const App = () => {
       case "services":
         return <Services data={landingPageData.Services} />;
       case "programs":
-        return <Programs data={landingPageData.Programs} />;
+        return (
+          <Programs
+            data={landingPageData.Programs}
+            onSelectProgram={(p) => {
+              setSelectedProgram(p);
+              setCurrentPage("programDetail");
+            }}
+          />
+        );
+      case "programDetail":
+        return <ProgramDetail data={selectedProgram} onNavigate={setCurrentPage} />;
       case "gallery":
         return <Gallery data={landingPageData.Gallery} />;
       case "testimonials":
